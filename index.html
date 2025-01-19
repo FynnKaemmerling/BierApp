@@ -11,21 +11,25 @@
 <body>
     <main>
         <h2>BierApp</h2>
+        <p id="wert"> YA </p>
     </main>
 </body>
 
 <script>
-    import { NextResponse } from 'next/server';
-    import { get } from '@vercel/edge-config';
-
-    export const config = { matcher: '/welcome' };
-
-    export async function middleware() {
-        const greeting = await get('greeting');
-        // NextResponse.json requires at least Next v13.1 or
-        // enabling experimental.allowMiddlewareResponseBody in next.config.js
-        return NextResponse.json(greeting);
-    }
+    fetch('data.json')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Fehler beim Laden der JSON-Datei: ' + response.status);
+        }
+        return response.json(); // JSON parsen
+    })
+    .then(data => {
+        // JSON-Inhalte anzeigen
+        document.getElementById("wert").innerHTML = `Name: ${data.name}, Wert: ${data.value}`;
+    })
+    .catch(error => {
+        console.error('Es gab ein Problem:', error);
+    });
 </script>
 
 </html>
