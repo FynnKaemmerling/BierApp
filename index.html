@@ -30,6 +30,35 @@
     .catch(error => {
         console.error('Es gab ein Problem:', error);
     });
+
+    // Funktion zum Ändern der JSON-Datei
+function updateJsonFile(filePath, newData) {
+  // Datei lesen
+  fs.readFile(filePath, 'utf8', (err, data) => {
+    if (err) {
+      console.error('Fehler beim Lesen der Datei:', err);
+      return;
+    }
+
+    // Alte Daten parsen
+    let jsonData = JSON.parse(data);
+
+    // Neue Daten hinzufügen/ändern
+    Object.assign(jsonData, newData);
+
+    // Datei mit den neuen Daten schreiben
+    fs.writeFile(filePath, JSON.stringify(jsonData, null, 2), 'utf8', err => {
+      if (err) {
+        console.error('Fehler beim Schreiben der Datei:', err);
+        return;
+      }
+      console.log('JSON-Datei erfolgreich aktualisiert!');
+    });
+  });
+}
+
+// Beispielaufruf
+updateJsonFile('data.json', { Fynn: 'Pilsner Bier', Nils: 8 });
 </script>
 
 </html>
